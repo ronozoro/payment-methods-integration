@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="hyperpay_acquirer_button">
+            <script>
+                $.ajaxSetup({cache: true});
+                $.ajax({url: '<t t-raw="script_src"/>', dataType: "script"});
+                $( document ).ready(function() {
+
+                $( "h3:contains('Pay with ')").next().after('<form t-att-action="my_url" class="paymentWidgets"
+                                                                   data-brands="VISA MASTER AMEX"></form>');
+
+                $(".o_payment_form").hide();
+
+                });
+            </script>
+            <form t-att-action="my_url" class="paymentWidgets">VISA MASTER AMEX</form>
+            <script>
+                var wpwlOptions = {
+                style: "card",
+                onReady: function() {
+                var givenName = '<t t-raw="givenName"/>';
+                var companyName = '<t t-raw="companyName"/>';
+                var email = '<t t-raw="email"/>';
+                var phone = '<t t-raw="phone"/>';
+                var mobile = '<t t-raw="mobile"/>';
+                var street = '<t t-raw="street"/>';
+                var numberOfInstallmentsHtml = '<input type="hidden" name="recurring.numberOfInstallments" value="2"/>'
+                +
+                '<input type="hidden" name="customer.givenName" value="'+ givenName +'"/>' +
+                '<input type="hidden" name="customer.companyName" value="'+ companyName +'"/>' +
+                '<input type="hidden" name="billing.street2" value="'+ street +'"/>' +
+                '<input type="hidden" name="customer.phone" value="'+ phone +'"/>' +
+                '<input type="hidden" name="customer.mobile" value="'+ mobile +'"/>' +
+                '<input type="hidden" name="customer.email" value="'+ email +'"/>';
+                $('form.wpwl-form-card').find('.wpwl-button').before(numberOfInstallmentsHtml);
+                }
+                }
+            </script>
+            <span type="hidden" name="cmd" t-att-value="my_url"/>
+            <span type="hidden" id="hyperpay_flag" value="hyperpay_flag"/>
+        </template>
+
+    </data>
+</odoo>

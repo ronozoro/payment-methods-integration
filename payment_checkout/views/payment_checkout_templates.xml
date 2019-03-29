@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="checkout_acquirer_button">
+            <form id="checkout-payment-form" t-if="acquirer" method="post" target="_self">
+                <script type="text/javascript" src="https://cdn.checkout.com/js/frames.js"></script>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <input type='hidden' name='merchant' t-att-value='acquirer.company_id.name'/>
+                <input type='hidden' name='amount' t-att-value="amount"/>
+                <input type="hidden" name='return_url' t-att-value='returndata'/>
+                <!--Order Information -->
+                <input type='hidden' name='invoice_num' t-att-value='reference'/>
+                <input type='hidden' name='currency' t-att-value='currency'/>
+                <input type='hidden' name='currency_id' t-att-value='currency_id'/>
+                <!-- Billing Information-->
+                <input type='hidden' name='name' t-att-value='name'/>
+                <input type='hidden' name='address_line1' t-att-value='address_line1'/>
+                <input type='hidden' name='address_city' t-att-value='address_city'/>
+                <input type='hidden' name='address_zip' t-att-value='address_zip'/>
+                <input type='hidden' name='address_country' t-att-value='address_country'/>
+                <input type='hidden' name='phone' t-att-value='phone'/>
+                <input type='hidden' name='email' t-att-value='email'/>
+                <input id="acquirer_checkout" type='hidden' name="acquirer" t-att-value="acquirer.id"/>
+                <input type='hidden' name="checkout_key" t-att-value="acquirer.checkout_publishable_key"/>
+                <div class="frames-container">
+                </div>
+                <br/>
+                <button style="margin-right: 90px;width:100px" t-att-class="submit_class">
+                    <img t-if="not submit_txt" src="/payment_checkout/static/src/img/icon.png"/>
+                    <span t-if="submit_txt">
+                        <t t-esc="submit_txt"/>
+                        <span class="fa fa-long-arrow-right"/>
+                    </span>
+                </button>
+                   <script type="text/javascript">
+                    Frames.init({
+                    publicKey: '<t t-esc="acquirer.sudo().checkout_publishable_key"/>',
+                    containerSelector: '.frames-container',
+                    });
+                </script>
+                <script type="text/javascript" src="/payment_checkout/static/src/js/checkout_dot_com.js"/>
+            </form>
+        </template>
+    </data>
+</odoo>
